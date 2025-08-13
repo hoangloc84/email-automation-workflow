@@ -1,0 +1,1 @@
+An event-driven, self-hosted workflow initiated by a webhook. Triggered by a new row event in Google Sheets, the process first performs a data validation check to de-duplicate email addresses, and then dispatches a customized email via SMTP.
