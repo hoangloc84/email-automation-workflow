@@ -1,0 +1,168 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "22520785@gm.uit.edu.vn",
+        "toEmail": "={{ $json.email }}",
+        "subject": "[LITTLE STORE] Thông báo xác nhận đăng ký thành công",
+        "emailFormat": "text",
+        "text": "=Lời đầu tiên, Little Store xin chúc bạn một ngày mới thật nhiều niềm vui và tràn đầy năng lượng!\n\nChúc mừng bạn với email {{ $json.email }} đã đăng ký tài khoản thành công! Bạn sẽ nhận ngay voucher giảm 10% cho đơn hàng tiếp theo tại Little Store.\n\nKhi mua hàng, bạn vui lòng cung cấp nội dung email này qua các kênh Fanpage của cửa hàng, tụi mình sẽ hỗ trợ áp dụng voucher nhanh chóng cho bạn nhé.\n\nMột lần nữa, Little Store xin chân thành cảm ơn sự quan tâm và ủng hộ của bạn. Khi nhận hàng, nếu có gặp bất kỳ vấn đề gì, bạn đừng ngần ngại liên hệ với tụi mình để được hỗ trợ kịp thời bạn nhé. Mong rằng bạn sẽ luôn có những trải nghiệm mua sắm thật vui vẻ tại Little Store!\n\nTrân trọng,\nĐội ngũ thành viên của Little Store",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        288
+      ],
+      "id": "e8059f08-c660-42b3-8fed-bf7fd62e7d68",
+      "name": "Send Email",
+      "webhookId": "a154b83c-a08a-4796-b20a-408892d2aa95",
+      "credentials": {
+        "smtp": {
+          "id": "Gi3veVKSRUFZY28f",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "send-email",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        400
+      ],
+      "id": "686e4926-5b9c-484b-a10e-876b8f4eab36",
+      "name": "Webhook",
+      "webhookId": "fbf53d4d-1f4a-42e5-b5fd-d7cb156bf4c2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e579fea7-54c2-4647-983d-7f9e59d692c0",
+              "leftValue": "={{ $items(\"Read GGSheet\").length }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        400
+      ],
+      "id": "7b230837-64e8-433d-8060-58815c981546",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oxPefae3MwHgDlJvYn0s8w-TfI5EZ7QTlB-HTn91qwk",
+          "mode": "list",
+          "cachedResultName": "little store data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oxPefae3MwHgDlJvYn0s8w-TfI5EZ7QTlB-HTn91qwk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1877243932,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oxPefae3MwHgDlJvYn0s8w-TfI5EZ7QTlB-HTn91qwk/edit#gid=1877243932"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "email",
+              "lookupValue": "={{ $json.body.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -448,
+        400
+      ],
+      "id": "edfa004f-1339-4f00-b92a-a6e481c91560",
+      "name": "Read GGSheet",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PF7htZNM7z4EYNVw",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read GGSheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read GGSheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "feeb9da8-eece-4cd6-a447-3718bc85afe8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "acdbfb6fc3a5cb477ddfc4811d091b1221110cbcaf7459ded9641c33747f1624"
+  },
+  "id": "xc56xPwIbTrB1V8b",
+  "tags": []
+}
