@@ -21,7 +21,7 @@
       "webhookId": "a154b83c-a08a-4796-b20a-408892d2aa95",
       "credentials": {
         "smtp": {
-          "id": "Gi3veVKSRUFZY28f",
+          "id": "",
           "name": "SMTP account"
         }
       }
@@ -112,7 +112,7 @@
       "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "PF7htZNM7z4EYNVw",
+          "id": "",
           "name": "Google Sheets account"
         }
       }
